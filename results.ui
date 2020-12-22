@@ -50,6 +50,13 @@
        </spacer>
       </item>
       <item>
+       <widget class="QPushButton" name="btn_del">
+        <property name="text">
+         <string>Удалить</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="btn_to_menu">
         <property name="text">
          <string>Меню</string>
@@ -71,8 +78,16 @@
       </item>
      </layout>
     </item>
+    <item>
+     <widget class="Line" name="line">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
+  <widget class="QStatusBar" name="status_line"/>
  </widget>
  <resources/>
  <connections/>

@@ -37,6 +37,10 @@ private slots:
 
     void on_table_dict_doubleClicked(const QModelIndex &index);
 
+    void on_search_textChanged(const QString &arg1);
+
+    void on_search_trn_textChanged(const QString &arg1);
+
 private:
     Ui::NewDict *ui;
     QFileInfo file_info;

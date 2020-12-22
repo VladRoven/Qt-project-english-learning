@@ -17,7 +17,7 @@ public:
     explicit WordEditForm(QWidget *parent = nullptr);
     ~WordEditForm();
 
-    void setModel(QStandardItemModel *model);
+    void setModel(QAbstractItemModel *model);
     QDataWidgetMapper *mapper;
 
 private slots:

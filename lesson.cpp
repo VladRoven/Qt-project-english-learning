@@ -63,7 +63,11 @@ void Lesson::on_btn_select_dict_clicked()
         ui->count_word->setText("Количество слов: " + QString::number(map_dict.count()));
     }
     else
+    {
+        ui->current_dict->setText("");
+        ui->count_word->setText("Количество слов: 0");
         ui->status_line->showMessage("Ошибка!");
+    }
 }
 
 void Lesson::on_btn_start_clicked()

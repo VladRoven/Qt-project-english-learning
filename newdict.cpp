@@ -6,6 +6,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QMessageBox>
+#include <QSortFilterProxyModel>
 
 NewDict::NewDict(QWidget *parent) :
     QMainWindow(parent),
@@ -120,8 +121,56 @@ void NewDict::on_btn_del_clicked()
 
 void NewDict::on_table_dict_doubleClicked(const QModelIndex &index)
 {
-    edit_form->setModel(model_dict);
+    edit_form->setModel(ui->table_dict->model());
     edit_form->mapper->setCurrentModelIndex(index);
     edit_form->setWindowModality(Qt::ApplicationModal);
     edit_form->show();
+}
+
+void NewDict::on_search_textChanged(const QString &arg1)
+{
+    if (arg1.length())
+    {
+        QString str = arg1;
+        str[ 0 ] = str[ 0 ].toUpper();
+        for (int i = 1; i < str.length(); i++)
+        {
+            str[i] = str[i].toLower();
+        }
+        QSortFilterProxyModel *proxy_model = new QSortFilterProxyModel();
+        proxy_model->setSourceModel(model_dict);
+        ui->table_dict->setModel(proxy_model);
+        proxy_model->setFilterKeyColumn(0);
+        proxy_model->setFilterRegExp(str);
+        ui->status_line->showMessage("Найдено записей: " + QString::number(proxy_model->rowCount()));
+    }
+    else
+    {
+        ui->table_dict->setModel(model_dict);
+        ui->status_line->showMessage("Всего записей: " + QString::number(model_dict->rowCount()));
+    }
+}
+
+void NewDict::on_search_trn_textChanged(const QString &arg1)
+{
+    if (arg1.length())
+    {
+        QString str = arg1;
+        str[ 0 ] = str[ 0 ].toUpper();
+        for (int i = 1; i < str.length(); i++)
+        {
+            str[i] = str[i].toLower();
+        }
+        QSortFilterProxyModel *proxy_model = new QSortFilterProxyModel();
+        proxy_model->setSourceModel(model_dict);
+        ui->table_dict->setModel(proxy_model);
+        proxy_model->setFilterKeyColumn(1);
+        proxy_model->setFilterRegExp(str);
+        ui->status_line->showMessage("Найдено записей: " + QString::number(proxy_model->rowCount()));
+    }
+    else
+    {
+        ui->table_dict->setModel(model_dict);
+        ui->status_line->showMessage("Всего записей: " + QString::number(model_dict->rowCount()));
+    }
 }

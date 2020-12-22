@@ -17,7 +17,7 @@ WordEditForm::~WordEditForm()
     delete ui;
 }
 
-void WordEditForm::setModel(QStandardItemModel *model)
+void WordEditForm::setModel(QAbstractItemModel *model)
 {
     mapper->setModel(model);
     mapper->addMapping(ui->word_en, 0);

@@ -25,9 +25,12 @@ signals:
 private slots:
     void on_btn_to_menu_clicked();
 
+    void on_btn_del_clicked();
+
 private:
     Ui::Results *ui;
     QStandardItemModel *model = new QStandardItemModel;
+    QString home_dir;
 };
 
 #endif // RESULTS_H

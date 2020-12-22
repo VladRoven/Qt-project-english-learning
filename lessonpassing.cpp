@@ -49,13 +49,13 @@ void LessonPassing::errorWork()
     ui->current_word->setText("Слово: " + map.find(list_word[itr]).value().toString());
     ui->btn_next->setText((itr == map.count() - 1) ? "Закончить" : "Следующее");
     ui->status_line->clearMessage();
+    ui->enter_word->setFocus();
 }
 
 void LessonPassing::setMap(QMap<QString, QVariant> map, QString name, QString dict_name, QString home_dir)
 {
     ui->status_line->clearMessage();
     ui->enter_word->clear();
-    ui->btn_next->setText("Следующее");
     itr = 0;
     count_right = 0;
     right_answ.clear();
@@ -68,6 +68,7 @@ void LessonPassing::setMap(QMap<QString, QVariant> map, QString name, QString di
     std::random_shuffle(list_word.begin(), list_word.end());
     ui->counter->setText(QString::number(itr + 1) + "/" + QString::number(map.count()));
     ui->current_word->setText("Слово: " + map.find(list_word[itr]).value().toString());
+    ui->btn_next->setText((itr == map.count() - 1) ? "Закончить" : "Следующее");
 }
 
 void LessonPassing::on_btn_to_menu_clicked()
@@ -201,7 +202,7 @@ void LessonPassing::on_btn_next_clicked()
 
 void LessonPassing::toResult(QString res)
 {
-    QFile json_file(QDir::currentPath() + "/result.json");
+    QFile json_file(home_dir + "/result.json");
     QDir::setCurrent(QDir::currentPath());
 
     if (!json_file.open(QIODevice::ReadOnly))

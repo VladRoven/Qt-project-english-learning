@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QMessageBox>
 
 Results::Results(QWidget *parent) :
     QMainWindow(parent),
@@ -20,6 +21,7 @@ Results::~Results()
 void Results::setTabItem(QString home_dir)
 {
     model->clear();
+    this->home_dir = home_dir;
     QFile jsonFile(home_dir + "/result.json");
 
     if (!jsonFile.open(QIODevice::ReadOnly))
@@ -58,4 +60,55 @@ void Results::on_btn_to_menu_clicked()
 {
     emit showMain();
     close();
+}
+
+void Results::on_btn_del_clicked()
+{
+    QModelIndex index = ui->table_result->currentIndex();
+
+    if (index.row() >= 0)
+    {
+        QMessageBox *msg = new QMessageBox();
+        msg->setIcon(QMessageBox::Information);
+        msg->setWindowTitle("Подтверждение удаления");
+        msg->setText("Вы действительно хотите удалить выбранную запись?");
+        QPushButton *btn_ok = msg->addButton("Да", QMessageBox::AcceptRole);
+        msg->addButton("Отмена", QMessageBox::RejectRole);
+        msg->setAttribute(Qt::WA_QuitOnClose, false);
+        msg->exec();
+
+        if (msg->clickedButton() == btn_ok)
+        {
+            model->removeRow(index.row());
+            ui->table_result->setModel(model);
+
+            QFile json_file(home_dir + "/result.json");
+            QDir::setCurrent(home_dir);
+
+            if (!json_file.open(QIODevice::WriteOnly))
+            {
+                return;
+            }
+
+            QJsonArray data;
+            for (int i = 0; i < model->rowCount(); i++)
+            {
+                QJsonArray row;
+
+                for (int j = 0; j < model->columnCount(); j++)
+                {
+                    row.append(QJsonValue(model->item(i, j)->text()));
+                }
+                data.append(row);
+            }
+
+            QJsonDocument saveDoc(data);
+            json_file.write(saveDoc.toJson());
+            json_file.close();
+        }
+    }
+    else
+    {
+        ui->status_line->showMessage("Выберите запись!");
+    }
 }
